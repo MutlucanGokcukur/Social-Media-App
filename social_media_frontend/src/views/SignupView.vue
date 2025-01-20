@@ -21,10 +21,11 @@
 
         <div class="main-center col-span-2 space-y-4">
             <div class="p-12 bg-white border border-gray-200 rounded-lg">
-                <form class="space-y-6">
+                <form class="space-y-6" @submit.prevent="submitForm">
                     <div>
                         <label for="name" class="block text-gray-700 font-medium">Name</label>
-                        <input 
+                        <input
+                            v-model="state.form.name"
                             id="name"
                             type="text" 
                             placeholder="Your full name" 
@@ -35,6 +36,7 @@
                     <div>
                         <label for="email" class="block text-gray-700 font-medium">E-mail Address</label>
                         <input 
+                            v-model="state.form.email"
                             id="email"
                             type="email" 
                             placeholder="Enter your e-mail address" 
@@ -44,7 +46,8 @@
 
                     <div>
                         <label for="password" class="block text-gray-700 font-medium">Password</label>
-                        <input 
+                        <input
+                            v-model="state.form.password1"
                             id="password"
                             type="password" 
                             placeholder="Create a strong password" 
@@ -54,7 +57,8 @@
 
                     <div>
                         <label for="confirm-password" class="block text-gray-700 font-medium">Confirm Password</label>
-                        <input 
+                        <input
+                            v-model="state.form.password2"
                             id="confirm-password"
                             type="password" 
                             placeholder="Repeat your password" 
@@ -64,6 +68,12 @@
                             @cut.prevent
                         >
                     </div>
+
+                    <template v-if="state.errors.length > 0">
+                        <div class="bg-red-300 text-white rounded-lg p-6">
+                            <p v-for="error in state.errors" :key="error">{{ error }}</p>
+                        </div>
+                    </template>
 
                     <div class="flex justify-end">
                         <button 
@@ -77,3 +87,9 @@
         </div>
     </div>
 </template>
+
+<script setup>
+import {useSignup} from '@/composables/SignupPage';
+
+const { submitForm, state } = useSignup();
+</script>
