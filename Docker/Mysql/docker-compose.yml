@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: social_media_database
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: social_media_123
+      MYSQL_DATABASE: social_media_DB
+      MYSQL_USER: social_media_user
+      MYSQL_PASSWORD: social_media_123
+    ports:
+      - "3306:3306"
+    volumes:
+      - /home/data:/var/lib/mysql
+
+volumes:
+  mysql_data:

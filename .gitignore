@@ -141,3 +141,4 @@ social_media_backend/.pyre/
 social_media_backend/.pytype/
 social_media_backend/cython_debug/
 social_media_backend/.pypirc
+env
