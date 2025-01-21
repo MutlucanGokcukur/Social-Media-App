@@ -89,7 +89,6 @@
 </template>
 
 <script setup>
-import {useSignup} from '@/composables/SignupPage';
-
+import {useSignup} from '@/composables/SignupView/Signup';
 const { submitForm, state } = useSignup();
 </script>

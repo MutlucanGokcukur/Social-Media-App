@@ -23,4 +23,7 @@ def signup(request):
         errors = [error for error_list in form.errors.values() for error in error_list]
         return JsonResponse({'errors': errors, 'status': 400}, status=400)
     
-
+@api_view(['GET'])
+def me(requset):
+    user = requset.user
+    return JsonResponse({'id':user.id, 'name': user.name, 'email':user.email}, status=200)

@@ -21,10 +21,11 @@
 
         <div class="main-center col-span-2 space-y-4">
             <div class="p-12 bg-white border border-gray-200 rounded-lg">
-                <form class="space-y-6">
+                <form class="space-y-6" @submit.prevent="submitForm">
                     <div>
                         <label for="email" class="block text-gray-700 font-medium">E-mail Address</label>
-                        <input 
+                        <input
+                            v-model="state.form.email"
                             id="email"
                             type="email" 
                             placeholder="Enter your e-mail address" 
@@ -35,12 +36,19 @@
                     <div>
                         <label for="password" class="block text-gray-700 font-medium">Password</label>
                         <input 
+                            v-model="state.form.password"
                             id="password"
                             type="password" 
                             placeholder="Enter your password" 
                             class="w-full mt-2 py-4 px-6 border border-gray-200 rounded-lg focus:ring-purple-500 focus:border-purple-500"
                         >
                     </div>
+
+                    <template v-if="state.errors.length > 0">
+                        <div class="bg-red-300 text-white rounded-lg p-6">
+                            <p v-for="error in state.errors" :key="error">{{ error }}</p>
+                        </div>
+                    </template>
 
                     <div class="flex justify-end">
                         <button 
@@ -54,3 +62,9 @@
         </div>
     </div>
 </template>
+
+<script setup>
+import { useLogin } from '@/composables/LoginView/Login.js';
+
+const { submitForm, state } = useLogin();
+</script>

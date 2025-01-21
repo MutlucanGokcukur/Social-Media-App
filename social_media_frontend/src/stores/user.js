@@ -3,13 +3,13 @@ import SecureLS from 'secure-ls';
 import { createPinia } from 'pinia';
 import piniaPluginPersistedState from 'pinia-plugin-persistedstate';
 import appAxios from '@/utils/appAxios';
-const ls = new SecureLS({ isCompression: false });
+
+const ls = new SecureLS({ encodingType: 'aes', isCompression: false });
 
 export const useUserStore = defineStore({
     id: 'user',
     state: () => ({
-        user: 
-        {
+        user: {
             isAuthenticated: false,
             id             : null,
             name           : null,
@@ -18,35 +18,33 @@ export const useUserStore = defineStore({
             refresh        : null,
         },
     }),
-    actions: 
-    {
-        initStore() 
-        {
-            if (localStorage.getItem('user.access'))
+    actions: {
+        initStore() {
+            const encryptedUser = ls.get('user');
+
+            if (encryptedUser && encryptedUser.access) 
             {
-                this.user.access          = localStorage.getItem('user.access');
-                this.user.refresh         = localStorage.getItem('user.refresh');
-                this.user.id              = localStorage.getItem('user.id');
-                this.user.name            = localStorage.getItem('user.name');
-                this.user.email           = localStorage.getItem('user.email');
+                this.user.access          = encryptedUser.access;
+                this.user.refresh         = encryptedUser.refresh;
+                this.user.id              = encryptedUser.id;
+                this.user.name            = encryptedUser.name;
+                this.user.email           = encryptedUser.email;
                 this.user.isAuthenticated = true;
 
                 this.refreshToken();
             }
         },
 
-        setToken(data)
+        setToken(data) 
         {
-            console.log('setToken', data);
-
             this.user.access          = data.access;
             this.user.refresh         = data.refresh;
             this.user.isAuthenticated = true;
 
-            localStorage.setItem('user.access', data.access);
-            localStorage.setItem('user.refresh', data.refresh);
+            this._updateSecureStorage();
         },
-        removeToken()
+
+        removeToken() 
         {
             this.user.refresh         = null;
             this.user.access          = null;
@@ -55,39 +53,47 @@ export const useUserStore = defineStore({
             this.user.name            = null;
             this.user.email           = null;
 
-            localStorage.setItem('user.access', '');
-            localStorage.setItem('user.refresh', '');
-            localStorage.setItem('user.id', '');
-            localStorage.setItem('user.name', '');
-            localStorage.setItem('user.email', '');
+            ls.remove('user');
         },
 
-        setUserInfo(user)
+        setUserInfo(user) 
         {
             this.user.id    = user.id;
             this.user.name  = user.name;
             this.user.email = user.email;
 
-            localStorage.setItem('user.id', this.user.id);
-            localStorage.setItem('user.name', this.user.name);
-            localStorage.setItem('user.email', this.user.email);
+            this._updateSecureStorage();
         },
 
-        refreshToken() {
-            appAxios.post('/api/account/refresh/', 
+        refreshToken() 
+        {
+            appAxios.post('/api/refresh/', 
             {
-                refresh: this.user.refresh
+                refresh: this.user.refresh,
             }).then((response) => 
             {
-                this.user.access = response.data.access
-                localStorage.setItem('user.access', response.data.access)
-                axios.defaults.headers.common["Authorization"] = "Bearer " + response.data.access
-            }).catch((error)=>
-            {
-                console.log(error)
+                    this.user.access = response.data.access;
+                    this._updateSecureStorage();
 
-                this.removeToken()
-            })
+                    appAxios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.access;
+            }).catch((error) => 
+            {
+                    console.log(error);
+                    this.removeToken();
+            });
+        },
+
+        _updateSecureStorage() 
+        {
+            ls.set('user', 
+            {
+                access         : this.user.access,
+                refresh        : this.user.refresh,
+                id             : this.user.id,
+                name           : this.user.name,
+                email          : this.user.email,
+                isAuthenticated: this.user.isAuthenticated,
+            });
         },
     },
     persist: 

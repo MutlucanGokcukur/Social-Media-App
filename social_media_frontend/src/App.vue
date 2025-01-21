@@ -49,4 +49,6 @@
 
 <script setup>
 import Toast from '@/components/Toast.vue'
+import { useAuth } from '@/composables/AppVue/App'
+const { userStore } = useAuth();
 </script>
