@@ -26,7 +26,7 @@
                 </div>
             </div>
 
-            <div class="p-4 bg-white border border-gray-200 rounded-lg">
+            <!-- <div class="p-4 bg-white border border-gray-200 rounded-lg">
                 <div class="mb-6 flex items-center justify-between">
                     <div class="flex items-center space-x-6">
                         <img src="@/assets/images/default_user_2/default_user_2_300.jpeg" class="w-[40px] rounded-full">
@@ -64,22 +64,24 @@
                         </svg>   
                     </div>   
                 </div>  
-            </div>
+            </div> -->
 
-            <div class="p-4 bg-white border border-gray-200 rounded-lg">
+            <div 
+                class="p-4 bg-white border border-gray-200 rounded-lg"
+                v-for="post in state.posts"
+                :key="post.id"
+            >
                 <div class="mb-6 flex items-center justify-between">
                     <div class="flex items-center space-x-6">
                         <img src="@/assets/images/default_user_1/default_user_1_300.jpeg" class="w-[40px] rounded-full">
                         
-                        <p><strong>Defaul User 1</strong></p>
+                        <p><strong>{{ post.created_by.name }}</strong></p>
                     </div>
 
-                    <p class="text-gray-600">28 minutes ago</p>
+                    <p class="text-gray-600">{{ post.created_at_formatted }}</p>
                 </div>
 
-                <p>
-                    This is just a random text post. This is just a random text post. This is just a random text post. This is just a random text post.
-                </p>
+                <p v-html="formatTextWithBreaks(post.body)"></p>
 
                 <div class="my-6 flex justify-between">
                     <div class="flex space-x-6">
@@ -122,4 +124,12 @@
 <script setup>
 import PeopleYouMayNow from '@/components/PeopleYouMayNow.vue';
 import Trends from '@/components/Trends.vue';
+import { feedFunctionalities } from '@/composables/FeedView/Feed';
+
+const { state } = feedFunctionalities();
+
+function formatTextWithBreaks(text) 
+{
+        return text.replace(/\r?\n/g, '<br>');
+}
 </script>

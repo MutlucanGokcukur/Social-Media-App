@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'corsheaders',
     'apps.account',
+    'apps.post',
 ]
 
 MIDDLEWARE = [
@@ -153,6 +154,8 @@ JAZZMIN_SETTINGS = {
         "account.User": "fas fa-users",
         "auth.user": "fas fa-user",
         "auth.Group": "fas fa-users-cog",
+        'post.Post': 'fas fa-newspaper',
+        'post.PostAttachment': 'fas fa-quote-right',
     },
     "default_icon_children": "fas fa-circle",
     "related_modal_active": False,
