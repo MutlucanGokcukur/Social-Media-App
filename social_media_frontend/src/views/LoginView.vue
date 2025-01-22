@@ -16,6 +16,9 @@
                     </router-link> 
                     to get started!
                 </p>
+                <div class="flex items-center justify-center">
+                    <img src="@/assets/images/icon/site_logo.png" alt="site logo" class="text-center w-1/2 mt-3"/>
+                </div>
             </div>
         </div>
 
