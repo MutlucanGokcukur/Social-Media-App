@@ -1,9 +1,10 @@
 import  { useGlobalContext } from '@/composables/GlobalContext';
-import { onMounted } from 'vue';
+import  { onMounted } from 'vue';
+import  { PostSocket } from '@/composables/FeedView/FeedSocket'; 
 
 export function feedFunctionalities()
 {
-    const { appAxios, reactive, toastStore, router, userStore } = useGlobalContext();
+    const { appAxios, reactive, toastStore } = useGlobalContext();
     
     const state = reactive({
         posts: [],
@@ -13,7 +14,13 @@ export function feedFunctionalities()
     onMounted(async()=>
     {       
         await getFeeds();
+        PostSocket(addNewPost); 
     });
+
+    function addNewPost(newPostData) 
+    {
+        state.posts.unshift(newPostData);
+    }
 
     async function getFeeds()
     {

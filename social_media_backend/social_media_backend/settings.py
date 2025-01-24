@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
+    'channels',
     'apps.account',
     'apps.post',
 ]
@@ -72,7 +73,16 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'social_media_backend.wsgi.application'
+ASGI_APPLICATION = "social_media_backend.asgi.application"
 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
+
+#region Consumers group names
+POST_GROUP_NAME = "post"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases

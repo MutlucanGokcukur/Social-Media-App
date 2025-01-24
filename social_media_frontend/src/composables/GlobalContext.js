@@ -1,14 +1,13 @@
 import { useUserStore } from '@/stores/user';
-import { useRouter } from 'vue-router';
-import {useToastStore} from '@/stores/toast';
-import { inject, reactive } from 'vue';
+import { useToastStore } from '@/stores/toast';
+import { reactive } from 'vue';
+import  router from '@/router/index';
+import  appAxios from '@/utils/appAxios';
 
 export function useGlobalContext() 
 {
     const userStore  = useUserStore();
     const toastStore = useToastStore();
-    const router     = useRouter();
-    const appAxios   = inject('appAxios');
 
     return {      
         userStore,   
