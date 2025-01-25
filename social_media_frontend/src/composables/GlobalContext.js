@@ -11,12 +11,18 @@ export function useGlobalContext()
     const toastStore = useToastStore();
     const route = useRoute();
 
+    const formatTextWithBreaks = (text) => 
+    {
+        return text.replace(/\r?\n/g, '<br>');
+    };
+
     return {      
         userStore,   
         toastStore,
         appAxios,
         route,
         router,
-        reactive
+        reactive,
+        formatTextWithBreaks
     };
 }

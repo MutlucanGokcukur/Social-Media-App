@@ -7,7 +7,7 @@ import { feedPostSocketFunctionalities } from '@/sockets/FeedView/FeedSocket';
 export function feedFunctionalities()
 {
     //#region Global Context
-    const { appAxios, reactive, toastStore } = useGlobalContext();
+    const { appAxios, reactive, toastStore, formatTextWithBreaks } = useGlobalContext();
     //#endregion
     //#region State
     const state = reactive
@@ -67,7 +67,8 @@ export function feedFunctionalities()
     //#region Return
     return {
         state,
-        submitForm
+        formatTextWithBreaks,
+        submitForm,
     }
     //#endregion
 }

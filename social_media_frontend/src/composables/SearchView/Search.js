@@ -5,7 +5,7 @@ import { useGlobalContext } from '@/composables/GlobalContext';
 export function searchFunctionalities()
 {
     //#region Global Context
-    const { appAxios, reactive, toastStore } = useGlobalContext();
+    const { appAxios, reactive, toastStore, formatTextWithBreaks } = useGlobalContext();
     //#endregion
     //#region State
     const state = reactive
@@ -39,6 +39,7 @@ export function searchFunctionalities()
     //#region Return
     return {
         state,
+        formatTextWithBreaks,
         submitForm,
     }
     //#endregion
