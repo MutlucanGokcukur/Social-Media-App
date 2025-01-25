@@ -1,7 +1,23 @@
 <template>
     <div class="max-w-7xl mx-auto grid grid-cols-4 gap-4">
-        <div class="main-center col-span-3 space-y-4">
-            <div class="bg-white border border-gray-200 rounded-lg">
+        <div class="main-left col-span-1">
+            <div class="p-4 bg-white border border-gray-200 text-center rounded-lg">
+                <img src="@/assets/images/default_user_1/default_user_1_300.jpeg" class="mb-6 rounded-full">
+                
+                <p><strong>{{ state.user.name }}</strong></p>
+
+                <div class="mt-6 flex space-x-8 justify-around">
+                    <p class="text-xs text-gray-500">182 friends</p>
+                    <p class="text-xs text-gray-500">120 posts</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-center col-span-2 space-y-4">
+            <div 
+                class="bg-white border border-gray-200 rounded-lg"
+                v-if="userStore.user.id === state.user.id"
+            >
                 <form action="post" @submit.prevent="submitForm">
                     <div class="p-4">  
                         <textarea 
@@ -75,16 +91,14 @@
 </template>
 
 <script setup>
-import PeopleYouMayNow from '@/components/PeopleYouMayNow.vue';
-import Trends from '@/components/Trends.vue';
-import { feedFunctionalities } from '@/composables/FeedView/Feed';
-import { useAuth } from '@/composables/AppVue/App'
-const { userStore } = useAuth();
+import  PeopleYouMayNow from '@/components/PeopleYouMayNow.vue';
+import  Trends from '@/components/Trends.vue';
+import { profileFunctionalities } from '@/composables/ProfileView/Profile';
 
-const { state, submitForm } = feedFunctionalities();
+const { state, userStore, submitForm } = profileFunctionalities();
 
 function formatTextWithBreaks(text) 
 {
-        return text.replace(/\r?\n/g, '<br>');
+    return text.replace(/\r?\n/g, '<br>');
 }
 </script>

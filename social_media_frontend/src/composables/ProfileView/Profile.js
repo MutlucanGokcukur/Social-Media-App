@@ -4,22 +4,23 @@ import { onMounted } from 'vue';
 import { feedPostSocketFunctionalities } from '@/sockets/FeedView/FeedSocket';
 //#endregion
 
-export function feedFunctionalities()
+export function profileFunctionalities()
 {
     //#region Global Context
-    const { appAxios, reactive, toastStore } = useGlobalContext();
+    const { appAxios, reactive, toastStore, userStore, route, } = useGlobalContext();
     //#endregion
     //#region State
     const state = reactive
     ({
         posts: [],
         form : {},
+        user : {},
     });
     //#endregion
     //#region On Mounted
     onMounted(async()=>
     {       
-        await getFeeds();
+        await getProfileFeeds();
         feedPostSocketFunctionalities(addNewPost); 
     });
     //#endregion
@@ -30,12 +31,14 @@ export function feedFunctionalities()
     };
     //#endregion
     //#region Fetch Feeds
-    async function getFeeds()
+    async function getProfileFeeds()
     {
         try
         {
-            const feedResponse = await appAxios.get('/api/posts/');
-            state.posts = feedResponse.data;
+            const userID        = route.params.id;
+            const response      = await appAxios.get(`/api/posts/profile/${userID}/`);
+            state.posts         = response.data.posts;
+            state.user          = response.data.user;
         }
         catch (apiError)
         {
@@ -67,7 +70,8 @@ export function feedFunctionalities()
     //#region Return
     return {
         state,
-        submitForm
+        userStore,
+        submitForm,
     }
     //#endregion
 }
