@@ -8,4 +8,5 @@ urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),
     path('api/', include('apps.account.urls')),
     path('api/posts/',include('apps.post.urls')),
+    path('api/search/',include('apps.search.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

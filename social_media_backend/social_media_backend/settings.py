@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'channels',
     'apps.account',
     'apps.post',
+    'apps.search',
 ]
 
 MIDDLEWARE = [
