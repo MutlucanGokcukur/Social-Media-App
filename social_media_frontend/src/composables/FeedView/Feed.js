@@ -1,27 +1,35 @@
-import  { useGlobalContext } from '@/composables/GlobalContext';
-import  { onMounted } from 'vue';
-import  { PostSocket } from '@/composables/FeedView/FeedSocket'; 
+//#region Imports
+import { useGlobalContext } from '@/composables/GlobalContext';
+import { onMounted } from 'vue';
+import { feedPostSocketFunctionalities } from '@/sockets/FeedView/FeedSocket';
+//#endregion
 
 export function feedFunctionalities()
 {
+    //#region Global Context
     const { appAxios, reactive, toastStore } = useGlobalContext();
-    
-    const state = reactive({
+    //#endregion
+    //#region State
+    const state = reactive
+    ({
         posts: [],
         form : {},
     });
-
+    //#endregion
+    //#region On Mounted
     onMounted(async()=>
     {       
         await getFeeds();
-        PostSocket(addNewPost); 
+        feedPostSocketFunctionalities(addNewPost); 
     });
-
+    //#endregion
+    //#region Add New Post
     function addNewPost(newPostData) 
     {
         state.posts.unshift(newPostData);
-    }
-
+    };
+    //#endregion
+    //#region Fetch Feeds
     async function getFeeds()
     {
         try
@@ -35,7 +43,8 @@ export function feedFunctionalities()
             toastStore.showToast(5000, apiError.message, 'bg-red-300');
         }
     }
-
+    //#endregion
+    //#region Submit Form
     async function submitForm()
     {
         try
@@ -53,9 +62,11 @@ export function feedFunctionalities()
             toastStore.showToast(5000, apiError.message, 'bg-red-300');
         }
     }
-
+    //#endregion
+    //#region Return
     return {
         state,
         submitForm
     }
+    //#endregion
 }
