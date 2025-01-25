@@ -142,7 +142,6 @@ social_media_backend/.pytype/
 social_media_backend/cython_debug/
 social_media_backend/.pypirc
 env
-social_media_backend/static/media/post_attachments
-social_media_backend/static/media/avatars
+social_media_backend/media
 
 notes.txt

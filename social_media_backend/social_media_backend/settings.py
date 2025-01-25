@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware', 
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -130,10 +131,13 @@ USE_I18N      = True
 USE_L10N      = True
 USE_TZ        = True
 
-STATIC_URL       = '/static/'
-MEDIA_URL        = '/media/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
-MEDIA_ROOT       = os.path.join(BASE_DIR, 'static/media')
+STATIC_URL          = '/static/'
+STATICFILES_DIRS    = [os.path.join(BASE_DIR, 'static'),]
+STATIC_ROOT         = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+MEDIA_URL  = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -142,7 +146,7 @@ JAZZMIN_SETTINGS = {
     "site_title": "Admin Panel",
     "site_header": "Social Media",
     "site_brand": "Admin Panel",
-    "site_logo": "/media/images/default_images/admin_logo.png",
+    "site_logo": "default_images/admin_logo.png",
     "login_logo": None,
     "login_logo_dark": None,
     "welcome_sign": "Welcome to the Social Media Backend Admin Panel",
