@@ -1,7 +1,9 @@
 from django.contrib import admin
 from import_export import resources
 from import_export.admin import ExportMixin
-from .models import User
+from .models import User,FriendshipRequest
+
+admin.site.register(FriendshipRequest)
 
 class UserResource(resources.ModelResource):
     class Meta:
@@ -15,9 +17,9 @@ class CustomUserAdmin(ExportMixin, admin.ModelAdmin):
     list_filter = ('date_joined',)
     search_fields = ('email', 'name')
     ordering = ('-id',)
-    readonly_fields = ('date_joined', 'last_login')
+    readonly_fields = ('date_joined', 'last_login', 'friends_count',)
     fieldsets = (
-        ('Personal info', {'fields': ('email','name', 'avatar')}),
+        ('Personal info', {'fields': ('email','name', 'avatar', 'friends_count',)}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('date_joined', 'last_login')}),
     )

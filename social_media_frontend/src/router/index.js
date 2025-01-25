@@ -7,6 +7,7 @@ import FeedView from '@/views/FeedView.vue'
 import MessagesView from '@/views/MessagesView.vue'
 import SearchView from '@/views/SearchView.vue'
 import ProfileView from '@/views/ProfileView.vue'
+import FriendsView from '@/views/FriendsView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -62,6 +63,14 @@ const router = createRouter({
       name     : 'Profile',
       component: ProfileView,
       meta: { requiresAuth: true },
+    },
+    //#endregion
+    //#region Friends Route
+    {
+      path     : '/profile/:id/friends',
+      name     : 'Friends',
+      component: FriendsView,
+      meta     : { requiresAuth: true },
     },
     //#endregion
   ],

@@ -7,9 +7,14 @@
                 <p><strong>{{ state.user.name }}</strong></p>
 
                 <div class="mt-6 flex space-x-8 justify-around">
-                    <p class="text-xs text-gray-500">182 friends</p>
+                    <RouterLink :to="{ name: 'Friends', params: { id: state.user.id } }" class="text-xs text-gray-500"><p class="text-xs text-gray-500">{{ state.user.friends_count }} friends</p></RouterLink>
                     <p class="text-xs text-gray-500">120 posts</p>
                 </div>
+
+                <div class="mt-6">
+                    <button class="inline-block py-4 px-3 bg-purple-600 text-xs text-white rounded-lg" @click="sendFriendshipRequest">Send friendship request</button>
+                </div>
+
             </div>
         </div>
 
@@ -59,6 +64,7 @@ import  PeopleYouMayNow from '@/components/PeopleYouMayNow.vue';
 import  Trends from '@/components/Trends.vue';
 import FeedItem from '@/components/FeedItem.vue';
 import { profileFunctionalities } from '@/composables/ProfileView/Profile';
+import { RouterLink } from 'vue-router';
 
-const { state, userStore, formatTextWithBreaks, submitForm } = profileFunctionalities();
+const { state, userStore, formatTextWithBreaks, submitForm, sendFriendshipRequest } = profileFunctionalities();
 </script>
