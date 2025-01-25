@@ -1,7 +1,6 @@
 //#region Imports
 import { useGlobalContext } from '@/composables/GlobalContext';
-import { onMounted } from 'vue';
-import { onBeforeRouteUpdate } from 'vue-router';
+import { onMounted, watch } from 'vue';
 import { feedPostSocketFunctionalities } from '@/sockets/FeedView/FeedSocket';
 //#endregion
 
@@ -26,16 +25,11 @@ export function profileFunctionalities()
     });
     //#endregion
     //#region Watch Profile Link ID
-    watch(
-        () => route.params.id,  // İzlenecek parametre
-        async (newId, oldId) => {
-            console.log('ID değişti:', newId);
-            await getFeed();  // Yeni veriyi çek
-        },
-        {
-            immediate: true,  // Sayfa ilk yüklendiğinde de çalışacak
-        }
-    );
+    watch(() => route.params.id,async (newId, oldId) => 
+    {
+        await getProfileFeeds();
+    },
+    {immediate: true,});
     //#endregion
     //#region Add New Post
     function addNewPost(newPostData) 
