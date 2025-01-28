@@ -1,13 +1,14 @@
 from pathlib import Path
 import os
 from datetime import timedelta
+from .host import IP_ADDRESS, FRONTEND_PORT, REDIS_PORT
 BASE_DIR   = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-jg#%2^4_k%h1^k4(=nw55$wschv0!=k-#*ci0&zl$8yy62e1z_'
 DEBUG      = True
 
-ALLOWED_HOSTS        = ['192.168.1.110']
-CORS_ALLOWED_ORIGINS = ['http://192.168.1.110:8080',]
-CSRF_TRUSTED_ORIGINS = ['http://192.168.1.110:8080',]
+ALLOWED_HOSTS        = [f'{IP_ADDRESS}']
+CORS_ALLOWED_ORIGINS = [f'http://{IP_ADDRESS}:{FRONTEND_PORT}']
+CSRF_TRUSTED_ORIGINS = [f'http://{IP_ADDRESS}:{FRONTEND_PORT}',]
 
 AUTH_USER_MODEL = 'account.User'
 
@@ -77,9 +78,18 @@ TEMPLATES = [
 WSGI_APPLICATION = 'social_media_backend.wsgi.application'
 ASGI_APPLICATION = "social_media_backend.asgi.application"
 
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels.layers.InMemoryChannelLayer',
+#     },
+# }
+
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [(f"{IP_ADDRESS}", REDIS_PORT)],
+        },
     },
 }
 
