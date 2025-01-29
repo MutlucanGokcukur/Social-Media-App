@@ -6,7 +6,7 @@ import { onMounted, watch } from 'vue';
 export function feedFunctionalities()
 {
     //#region Global Context
-    const { appAxios, reactive, toastStore, formatTextWithBreaks, feedSocket } = useGlobalContext();
+    const { appAxios, reactive, toastStore, formatTextWithBreaks, feedSocket, userStore } = useGlobalContext();
     //#endregion
     //#region State
     const state = reactive
@@ -18,7 +18,7 @@ export function feedFunctionalities()
     //#region On Mounted
     onMounted(async()=>
     {
-        feedSocket.connectSocket();
+        feedSocket.connectSocket(userStore);
         await getFeeds();
     });
     //#endregion
