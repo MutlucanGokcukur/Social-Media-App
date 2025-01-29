@@ -1,10 +1,9 @@
 import { onBeforeMount } from 'vue';
 import { useGlobalContext } from '@/composables/GlobalContext';
 
-
 export function useAuth() 
 {
-    const { appAxios, reactive, toastStore, router, userStore } = useGlobalContext();
+    const { appAxios, userStore } = useGlobalContext();
 
     const initAuth = () => 
     {

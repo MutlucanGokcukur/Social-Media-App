@@ -1,13 +1,12 @@
 //#region Imports
 import { useGlobalContext } from '@/composables/GlobalContext';
 import { onMounted, watch } from 'vue';
-import { feedPostSocketFunctionalities } from '@/sockets/FeedView/FeedSocket';
 //#endregion
 
 export function profileFunctionalities()
 {
     //#region Global Context
-    const { appAxios, reactive, toastStore, userStore, route, formatTextWithBreaks } = useGlobalContext();
+    const { appAxios, reactive, toastStore, userStore, route, formatTextWithBreaks, feedSocket } = useGlobalContext();
     //#endregion
     //#region State
     const state = reactive
@@ -23,8 +22,8 @@ export function profileFunctionalities()
     //#region On Mounted
     onMounted(async () => 
     {
-        await getProfileFeeds();
-        feedPostSocketFunctionalities(addNewPost); 
+        feedSocket.connectSocket();
+        await getProfileFeeds(); 
     });
     //#endregion
     //#region Watch Profile Link ID
@@ -34,12 +33,16 @@ export function profileFunctionalities()
     },
     {immediate: true,});
     //#endregion
-    //#region Add New Post
-    function addNewPost(newPostData) 
+    //#region Watch Feed Socket Received Datas
+    watch(() => feedSocket.receivedData, (newData) => 
     {
-        state.posts.unshift(newPostData);
-    };
-    //#endregion   
+        const action = newData.action;
+        if (action === 'created')
+        {
+            state.posts.unshift(newData.post);
+        }
+    });
+    //#endregion  
     //#region Fetch Feeds
     async function getProfileFeeds()
     {

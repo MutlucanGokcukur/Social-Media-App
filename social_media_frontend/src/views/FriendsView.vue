@@ -41,14 +41,14 @@
                     <div class="mt-6 space-x-4">
                         <button 
                             class="inline-block py-4 px-6 bg-purple-600 text-white rounded-lg"
-                            @click="handleRequest('accept', friendshiprequest.created_by.id)"
+                            @click="handleRequest('accepted', friendshiprequest.created_by.id)"
                         >
                             Accept
                         </button>
 
                         <button 
                             class="inline-block py-4 px-6 bg-red-600 text-white rounded-lg"
-                            @click="handleRequest('reject', friendshiprequest.created_by.id)"
+                            @click="handleRequest('rejected', friendshiprequest.created_by.id)"
                         >
                             Reject
                         </button>

@@ -1,13 +1,12 @@
 //#region Imports
 import { useGlobalContext } from '@/composables/GlobalContext';
-import { onMounted } from 'vue';
-import { feedPostSocketFunctionalities } from '@/sockets/FeedView/FeedSocket';
+import { onMounted, watch } from 'vue';
 //#endregion
 
 export function feedFunctionalities()
 {
     //#region Global Context
-    const { appAxios, reactive, toastStore, formatTextWithBreaks } = useGlobalContext();
+    const { appAxios, reactive, toastStore, formatTextWithBreaks, feedSocket } = useGlobalContext();
     //#endregion
     //#region State
     const state = reactive
@@ -18,16 +17,29 @@ export function feedFunctionalities()
     //#endregion
     //#region On Mounted
     onMounted(async()=>
-    {       
+    {
+        feedSocket.connectSocket();
         await getFeeds();
-        feedPostSocketFunctionalities(addNewPost); 
     });
     //#endregion
-    //#region Add New Post
-    function addNewPost(newPostData) 
+    //#region Watch Feed Socket Received Datas
+    watch(() => feedSocket.receivedData, (data) => 
     {
-        state.posts.unshift(newPostData);
-    };
+        const action = data.action;
+        if (action === 'created')
+        {
+            state.posts.unshift(data.post);
+        }
+        else if(action === 'deleted')
+        {
+            const findData = state.posts.find(i=> i.id === data.post.id);
+
+            if (findData)
+            {
+                state.posts = state.posts.filter(i => i.id !== data.post.id);
+            }
+        }
+    });
     //#endregion
     //#region Fetch Feeds
     async function getFeeds()
