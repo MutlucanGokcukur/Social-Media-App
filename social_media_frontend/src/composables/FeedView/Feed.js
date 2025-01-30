@@ -18,7 +18,7 @@ export function feedFunctionalities()
     //#region On Mounted
     onMounted(async()=>
     {
-        feedSocket.connectSocket(userStore);
+        feedSocket.connectSocket();
         await getFeeds();
     });
     //#endregion

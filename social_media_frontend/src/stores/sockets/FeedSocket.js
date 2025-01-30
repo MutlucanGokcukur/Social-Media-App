@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { apiBaseURL } from '@/config/config';
+import { useUserStore } from "../user";
 
 export const useFeedSocket =defineStore(
 {
@@ -9,16 +10,17 @@ export const useFeedSocket =defineStore(
         socket      : null,
         isConnected : false,
         receivedData: null,
+        userStore : useUserStore(),
     }),
 
     actions:
     {
-        connectSocket(userStore)
+        connectSocket()
         {
             if(!this.socket)
             {
                 const wsURL = `ws://${apiBaseURL.host.replace(/^https?:\/\//, '')}:${apiBaseURL.port}/ws/post/`;
-                this.socket = new WebSocket(`${wsURL}?user_id=${userStore.user.id}`);
+                this.socket = new WebSocket(`${wsURL}?uuid=${this.userStore.user.id}`);
 
                 this.socket.onopen = () => 
                 {

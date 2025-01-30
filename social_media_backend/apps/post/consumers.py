@@ -7,18 +7,21 @@ from django.core.exceptions import ObjectDoesNotExist
 class PostConsumer(AsyncWebsocketConsumer):
     
     async def connect(self):
-        user_id = self.scope['query_string'].decode().split('=')[1]
-        if not await self.is_valid_user(user_id):
-            await self.close()
-        else:
-            group_name = f"user_{user_id}"
-            await self.channel_layer.group_add(group_name, self.channel_name)
-            await self.accept()
+        query_string = self.scope.get('query_string', b'').decode()
+        params       = dict(param.split('=') for param in query_string.split('&'))
+        uuid         = params.get('uuid')
 
+        if not uuid or not await self.is_valid_user(uuid): 
+            await self.close() 
+            return
+        group_name = settings.POST_GROUP_NAME
+        await self.channel_layer.group_add(group_name, self.channel_name)
+        await self.accept()
+        
     async def disconnect(self, close_code):
-        user_id = self.scope['query_string'].decode().split('=')[1]
-        group_name = f"user_{user_id}"
+        group_name = settings.POST_GROUP_NAME
         await self.channel_layer.group_discard(group_name, self.channel_name)
+        
     async def post_message(self, event):
         await self.send(text_data=json.dumps({
             "action": event["action"],
