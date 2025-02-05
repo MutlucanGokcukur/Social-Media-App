@@ -20,7 +20,8 @@ export const useFeedSocket =defineStore(
             if(!this.socket)
             {
                 const wsURL = `ws://${apiBaseURL.host.replace(/^https?:\/\//, '')}:${apiBaseURL.port}/ws/post/`;
-                this.socket = new WebSocket(`${wsURL}?uuid=${this.userStore.user.id}`);
+                // this.socket = new WebSocket(`${wsURL}?uuid=${this.userStore.user.id}`);
+                this.socket = new WebSocket(wsURL);
 
                 this.socket.onopen = () => 
                 {
